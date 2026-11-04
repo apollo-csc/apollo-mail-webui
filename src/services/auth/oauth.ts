@@ -13,12 +13,15 @@ const SCOPES = import.meta.env.VITE_OAUTH_SCOPES as string | undefined;
 
 // SSO ApolloAuth (Authentik). O Stalwart valida o token deste IdP direto — Directory
 // tipo OIDC apontando para o MESMO issuer. Client público: PKCE, sem segredo no browser.
-// Domínio CANÔNICO do IdP (apollo.apolloauth.com.br). O Authentik deriva o `iss` do
-// host da requisição, e o Stalwart compara com o issuerUrl do Directory — usar o
-// domínio legado (auth.apollosolution) aqui faria os dois divergirem.
+// Domínio CANÔNICO do IdP: **app.apolloauth.com.br** (04/nov/2026). O Authentik deriva
+// o `iss` do host da requisição, e o Stalwart compara com o issuerUrl do Directory —
+// usar um host legado aqui faria os dois divergirem. Pior: os hosts antigos
+// (apollo.apolloauth, auth.apollosolution) respondem **301**, e um `fetch` cross-origin
+// não sobrevive ao redirect (o 301 não carrega Access-Control-Allow-Origin) — o login
+// morria com "Failed to fetch" antes mesmo de sair da tela.
 const APOLLOAUTH_ISSUER =
   (import.meta.env.VITE_APOLLOAUTH_ISSUER as string) ||
-  'https://apollo.apolloauth.com.br/application/o/mail-admin/';
+  'https://app.apolloauth.com.br/application/o/mail-admin/';
 const APOLLOAUTH_CLIENT_ID =
   (import.meta.env.VITE_APOLLOAUTH_CLIENT_ID as string) || 'apollo-mail-console';
 
