@@ -7,11 +7,12 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './en.json';
+import pt from './pt.json';
 
 const RTL_LANGUAGES = ['ar', 'he', 'fa', 'ur'];
 
 i18n.use(initReactI18next).init({
-  resources: { en: { translation: en } },
+  resources: { en: { translation: en }, pt: { translation: pt } },
   lng: navigator.language?.split('-')[0] || 'en',
   fallbackLng: 'en',
   interpolation: { escapeValue: false },

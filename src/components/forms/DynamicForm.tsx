@@ -51,6 +51,7 @@ import { coerceLabel } from '@/lib/objectOptions';
 import { SECRET_MASK } from '@/lib/jmapUtils';
 import { toast } from '@/hooks/use-toast';
 import { logFormChange } from '@/lib/debug';
+import { reservedBotPrefixErrors } from '@/lib/reservedBotPrefix';
 import { FieldWidget } from '@/components/forms/FieldWidget';
 
 import type { Field, Fields, Form, FormField, Schema } from '@/types/schema';
@@ -423,6 +424,22 @@ export function DynamicForm({ viewName, objectId }: DynamicFormProps) {
         setSaving(false);
         return;
       }
+    }
+
+    const prefixErrors = reservedBotPrefixErrors(
+      formData,
+      {
+        objectName: obj.objectName,
+        isCreate,
+        originalData: isCreate ? undefined : originalData,
+      },
+      t('form.reservedBotPrefix', "The 'bot-' prefix is reserved for agent accounts."),
+    );
+    if (Object.keys(prefixErrors).length > 0) {
+      setFieldErrors(prefixErrors);
+      setGeneralError(t('form.correctErrorsBelow', 'Please correct the errors below.'));
+      setSaving(false);
+      return;
     }
 
     if (!isOtpAuthValid(formData)) {
