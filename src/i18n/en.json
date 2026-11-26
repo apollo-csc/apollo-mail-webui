@@ -208,6 +208,7 @@
     "objectNotFound": "Object not found.",
     "otpCodeRequired": "Enter your current authenticator code to authorise this change.",
     "required": "This field is required.",
+    "reservedBotPrefix": "The 'bot-' prefix is reserved for agent accounts.",
     "savedSuccess": "Saved successfully",
     "selectType": "Select type...",
     "stay": "Stay",
